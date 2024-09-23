@@ -7,7 +7,7 @@ const generate = function () {
 };
 
 const request = function (url, method, data) {
-	return axios({ url, method, data });
+	return axios({ url, method, data, validateStatus: false });
 };
 
 test('Should get posts', async function () {
