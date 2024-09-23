@@ -33,6 +33,15 @@ test('Should save a post', async function () {
 	await postsService.deletePost(post.id);
 });
 
+test('Should not save a post', async function () {
+	const data = { title: generate(), content: generate() };
+	const response1 = await request('http://localhost:3000/posts', 'post', data);
+	const response2 = await request('http://localhost:3000/posts', 'post', data);
+	expect(response2.status).toBe(409);
+	const post = response1.data;
+	await postsService.deletePost(post.id);
+});
+
 test('Should update a post', async function () {
     const post = await postsService.savePost({ title: generate(), content: generate() });
     post.title = generate();
@@ -45,12 +54,12 @@ test('Should update a post', async function () {
 	await postsService.deletePost(post.id);
 });
 
-test.only('Should not update a post', async function () {
+test('Should not update a post', async function () {
     const post = {
         id: 1
     };
 	const response = await request(`http://localhost:3000/posts/${post.id}`, 'put', post);
-    expect(response.status).toBe(204);
+    expect(response.status).toBe(404);
 });
 
 test('Should delete a post', async function () {
